@@ -48,12 +48,16 @@
         ship.y + ship.r * (Math.sin(ship.a) + Math.cos(ship.a))
       );
 
+      ctx.closePath();
       ctx.stroke();
       // rotate the ship
 
       // move the ship
 
 
+      // centre dot
+      ctx.fillStyle = "red";
+      ctx.fillRect(ship.x - 1, ship.y - 1, 2,2);
 
     }
 

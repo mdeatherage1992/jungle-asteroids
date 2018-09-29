@@ -11,6 +11,7 @@
   <canvas id="gameCanvas" width="700" height="500"></canvas>
   <script>
     const FPS = 30;
+    const FRICTION = 0.7; // friction coefficient of space
     const SHIP_SIZE = 30; // in pixels
     const TURN_SPEED = 360; // turn speed in degrees per second
     const SHIP_THRUST = 5; // acceleration of the ship in pixels per second per second
@@ -76,6 +77,9 @@
         ship.thrust.x += SHIP_THRUST * Math.cos(ship.a) / FPS;
         ship.thrust.y -= SHIP_THRUST * Math.sin(ship.a) / FPS;
 
+      }else {
+        ship.thrust.x -= FRICTION * ship.thrust.x / FPS;
+        ship.thrust.y -= FRICTION * ship.thrust.y / FPS;
       }
 
       // draw triangular ship

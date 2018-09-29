@@ -22,6 +22,11 @@
       r: SHIP_SIZE / 2,
       a: 90 / 180 * Math.PI, //convert to radians
       rot: 0
+      thrusting: false,
+      thrust: {
+        x: 0,
+        y: 0
+      }
     }
 
     //set up event handlers
@@ -38,7 +43,7 @@
             ship.rot = TURN_SPEED / 180 * Math.PI / FPS;
             break;
         case 38:  // up arrow (thrust forward)
-
+            ship.thrusting = true;
           break;
         case 39: // right arrow (rotate ship right)
           ship.rot = -TURN_SPEED / 180 * Math.PI / FPS;
@@ -46,13 +51,13 @@
       }
     }
 
-    function keyUp(ev) {
+    function keyUp(/** @type {KeyBoardEvent} */ev) {
       switch(ev.keyCode){
         case 37: //left arrow(stop rotating left)
             ship.rot = 0;
             break;
         case 38:  // up arrow (stop thrust forward)
-
+            ship.thrusting = false;
           break;
         case 39: // right arrow (stop rotate ship right)
           ship.rot = 0;

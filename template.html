@@ -184,11 +184,10 @@
       }
 
       // draw the asteroids
-      ctx.strokeStyle = 'slategrey';
-      ctx.lineWidth = SHIP_SIZE / 20;
       var x,y,r,a,vert,offs;
       for(var i = 0; i < roids.length; i++ ) {
-
+        ctx.strokeStyle = 'slategrey';
+        ctx.lineWidth = SHIP_SIZE / 20;
         //get the asteroid properties
         x = roids[i].x;
         y = roids[i].y;
@@ -222,32 +221,7 @@
          }
 
 
-        //move asteroids
-        roids[i].x += roids[i].xv;
-        roids[i].y += roids[i].yv;
-
-
-
-        // handle edge of screen
-        if(roids[i].x < 0 - roids[i].r) {
-          roids[i].x = canv.width + roids[i].r;
-        }else if(roids[i].x > canv.width + roids[i].r) {
-            roids[i].x = 0 - roids[i].r;
-        }
-
-        if(roids[i].y < 0 - roids[i].r) {
-          roids[i].y = canv.height + roids[i].r;
-        }else if(roids[i].y > canv.height + roids[i].r) {
-            roids[i].y = 0 - roids[i].r;
-
-          }
-
       }
-
-
-
-
-
 
 
       // rotate the ship
@@ -270,6 +244,26 @@
         ship.y = 0 - ship.r;
       }
 
+
+    for(var i =0; i < roids.length; i++) {
+      //move asteroids
+      roids[i].x += roids[i].xv;
+      roids[i].y += roids[i].yv;
+
+      // handle edge of screen
+        if(roids[i].x < 0 - roids[i].r) {
+        roids[i].x = canv.width + roids[i].r;
+      }else if(roids[i].x > canv.width + roids[i].r) {
+          roids[i].x = 0 - roids[i].r;
+      }
+
+        if(roids[i].y < 0 - roids[i].r) {
+          roids[i].y = canv.height + roids[i].r;
+        }else if(roids[i].y > canv.height + roids[i].r) {
+          roids[i].y = 0 - roids[i].r;
+        }
+
+      }
 
       // centre dot
       ctx.fillStyle = "red";

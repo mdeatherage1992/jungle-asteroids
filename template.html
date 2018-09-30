@@ -265,7 +265,7 @@
 
 
       }
-
+      if(!exploding) {
       // check for asteroid collisions
       for(var i =0; i < roids.length; i++) {
         if(distBetweenPoints(ship.x,ship.y,roids[i].x, roids[i].y) < ship.r + roids[i].r) {
@@ -280,6 +280,7 @@
       // move the ship
       ship.x  += ship.thrust.x;
       ship.y += ship.thrust.y;
+    }
 
       //handle edge of the screen
       if(ship.x < 0 - ship.r) {

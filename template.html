@@ -14,6 +14,7 @@
     const ROIDS_NUM = 10; // starting number of asteroids
     const ROIDS_JAG = 0.4; // jaggedness of the asteroids (0 = none, 1= lots)
     const ROIDS_SPD = 100; //starting size of asteroids
+    const SHIP_EXPLODE_DUR = 0.3; // duration of explosion
     const ROIDS_SIZE = 50; // max starting speed of asteroids in PPS
     const ROIDS_VERT = 10; // average number of vertices on each asteroid
     const FRICTION = 0.7; // friction coefficient of space
@@ -30,6 +31,7 @@
       r: SHIP_SIZE / 2,
       a: 90 / 180 * Math.PI, //convert to radians
       rot: 0,
+      explodeTime: 0,
       thrusting: false,
       thrust: {
         x: 0,
@@ -68,12 +70,7 @@
     }
 
     function explodeShip() {
-      ctx.fillStyle = "lime";
-      ctx.strokeStyle = "lime";
-      ctx.beginPath();
-      ctx.arc(ship.x,ship.y,ship.r, 0, Math.PI * 2, false);
-      ctx.fill();
-      ctx.stroke();
+    ship.explodeTime = Math.ceil(SHIP_EXPLODE_DUR * FPS);
     }
 
     function keyDown(/** @type {KeyBoardEvent} */ev) {
@@ -126,6 +123,8 @@
     }
 
     function update() {
+      var exploding = ship.explodeTime > 0;
+
       //draw space
       ctx.fillStyle = "black";
       ctx.fillRect(0,0,canv.width, canv.height)
@@ -162,6 +161,7 @@
       }
 
       // draw triangular ship
+      if(!exploding) {
       ctx.strokeStyle = "white",
       ctx.lineWidth = SHIP_SIZE / 20;
       ctx.beginPath();
@@ -182,6 +182,33 @@
 
       ctx.closePath();
       ctx.stroke();
+    } else {
+      //draw the explosion
+      ctx.fillStyle = "red";
+      ctx.beginPath();
+      ctx.arc(ship.x,ship.y,ship.r * 1.5, 0, Math.PI * 2, false);
+      ctx.fill();
+
+      ctx.fillStyle = "orange";
+      ctx.beginPath();
+      ctx.arc(ship.x,ship.y,ship.r * 1.2, 0, Math.PI * 2, false);
+      ctx.fill();
+
+      ctx.fillStyle = "yellow";
+      ctx.beginPath();
+      ctx.arc(ship.x,ship.y,ship.r * 0.9, 0, Math.PI * 2, false);
+      ctx.fill();
+
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      ctx.arc(ship.x,ship.y,ship.r * 0.6, 0, Math.PI * 2, false);
+      ctx.fill();
+
+    }
+
+
+
+
 
       // collision detection
 

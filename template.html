@@ -145,7 +145,7 @@
         ship.thrust.x += SHIP_THRUST * Math.cos(ship.a) / FPS;
         ship.thrust.y -= SHIP_THRUST * Math.sin(ship.a) / FPS;
 
-      if(!exploding) {
+      if(!exploding && blinkOn) {
         // draw the flames
         ctx.fillStyle = "green";
         ctx.strokeStyle = "yellow",
@@ -205,7 +205,7 @@
       //reduce blink num
       if(ship.blinkTime == 0) {
         ship.blinkTime = Math.ceil(SHIP_BLINK_DUR * FPS);
-        ship.blinkNum--; 
+        ship.blinkNum--;
       }
     }
 
@@ -293,12 +293,14 @@
 
       }
       if(!exploding) {
+        if(ship.blinkNum == 0) {
       // check for asteroid collisions
       for(var i =0; i < roids.length; i++) {
         if(distBetweenPoints(ship.x,ship.y,roids[i].x, roids[i].y) < ship.r + roids[i].r) {
           explodeShip();
         }
       }
+    }
 
 
       // rotate the ship

@@ -12,6 +12,8 @@
   <script>
     const FPS = 30;
     const ROIDS_NUM = 10; // starting number of asteroids
+    const LASER_MAX = 10; //maximum number of lasers on screen at once
+    const LASER_SPD = 500; // speeed of lasers in pps
     const ROIDS_JAG = 0.4; // jaggedness of the asteroids (0 = none, 1= lots)
     const ROIDS_SPD = 100; //starting size of asteroids
     const SHIP_EXPLODE_DUR = 0.3; // duration of explosion
@@ -65,6 +67,9 @@
 
     function keyDown(/** @type {KeyBoardEvent} */ev) {
       switch(ev.keyCode){
+        case 32: //space bar
+            shootLaser();
+            break;
         case 37: //left arrow(rotate ship left)
             ship.rot = TURN_SPEED / 180 * Math.PI / FPS;
             break;
@@ -79,6 +84,9 @@
 
     function keyUp(/** @type {KeyBoardEvent} */ev) {
       switch(ev.keyCode){
+        case 32: //space bar
+            ship.canShoot = true;
+            break;
         case 37: //left arrow(stop rotating left)
             ship.rot = 0;
             break;
@@ -123,6 +131,8 @@
         rot: 0,
         blinkTime: Math.ceil(SHIP_BLINK_DUR * FPS),
         blinkNum: Math.ceil(SHIP_INV_DUR / SHIP_BLINK_DUR),
+        lasers: [],
+        canShoot: true,
         explodeTime: 0,
         thrusting: false,
         thrust: {
@@ -130,6 +140,20 @@
           y: 0
         }
       }
+    }
+
+    function shootLaser() {
+      //create hte laser objects
+      if(ship.canShoot && ship.lasers.length < LASER_MAX) {
+        ship.lasers.push({ //from the nose
+          x:ship.x +  4 / 3 * ship.r * Math.cos(ship.a),
+          y:ship.y - 4 / 3 * ship.r * Math.sin(ship.a),
+          xv:LASER_SPD * Math.cos(ship.a) / FPS,
+          yv:LASER_SPD * Math.sin(ship.a) / FPS
+        });
+      }
+      //prevent shooting
+      ship.canShoot = false;
     }
 
     function update() {
@@ -279,6 +303,7 @@
              y + r * offs[j] * Math.sin(a + j * Math.PI * 2 / vert)
            );
          }
+       }
 
          ctx.closePath();
          ctx.stroke();
@@ -290,8 +315,18 @@
            ctx.stroke();
          }
 
+         // draw the lasers
 
-      }
+         for(var i = 0; i < ship.lasers.length; i++) {
+           ctx.fillStyle = "salmon";
+           ctx.beginPath();
+           ctx.arc(ship.lasers[i].x, ship.lasers[i].y, SHIP_SIZE / 15, 0, Math.PI * 2, false);
+           ctx.fill();
+         }
+
+
+
+
       if(!exploding) {
         if(ship.blinkNum == 0) {
       // check for asteroid collisions

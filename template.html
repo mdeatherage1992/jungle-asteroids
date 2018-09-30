@@ -67,6 +67,15 @@
       return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
+    function explodeShip() {
+      ctx.fillStyle = "lime";
+      ctx.strokeStyle = "lime";
+      ctx.beginPath();
+      ctx.arc(ship.x,ship.y,ship.r, 0, Math.PI * 2, false);
+      ctx.fill();
+      ctx.stroke();
+    }
+
     function keyDown(/** @type {KeyBoardEvent} */ev) {
       switch(ev.keyCode){
         case 37: //left arrow(rotate ship left)
@@ -221,6 +230,13 @@
          }
 
 
+      }
+
+      // check for asteroid collisions
+      for(var i =0; i < roids.length; i++) {
+        if(distBetweenPoints(ship.x,ship.y,roids[i].x, roids[i].y) < ship.r + roids[i].r) {
+          explodeShip();
+        }
       }
 
 

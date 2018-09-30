@@ -15,6 +15,8 @@
     const ROIDS_JAG = 0.4; // jaggedness of the asteroids (0 = none, 1= lots)
     const ROIDS_SPD = 100; //starting size of asteroids
     const SHIP_EXPLODE_DUR = 0.3; // duration of explosion
+    const SHIP_BLINK_DUR = 0.1; // duration of blink during invisibility
+    const SHIP_INV_DUR = 3; // 3 second invisibility for user
     const ROIDS_SIZE = 50; // max starting speed of asteroids in PPS
     const ROIDS_VERT = 10; // average number of vertices on each asteroid
     const FRICTION = 0.7; // friction coefficient of space
@@ -119,6 +121,8 @@
         r: SHIP_SIZE / 2,
         a: 90 / 180 * Math.PI, //convert to radians
         rot: 0,
+        blinkTime: Math.ceil(SHIP_BLINK_DUR * FPS),
+        blinkNum: Math.ceil(SHIP_INV_DUR / SHIP_BLINK_DUR),
         explodeTime: 0,
         thrusting: false,
         thrust: {
@@ -130,7 +134,7 @@
 
     function update() {
       var exploding = ship.explodeTime > 0;
-
+      var blinkOn = ship.blinkNum % 2 == 0;
       //draw space
       ctx.fillStyle = "black";
       ctx.fillRect(0,0,canv.width, canv.height)
@@ -170,6 +174,7 @@
 
       // draw triangular ship
       if(!exploding) {
+        if(blinkOn) {
       ctx.strokeStyle = "white",
       ctx.lineWidth = SHIP_SIZE / 20;
       ctx.beginPath();
@@ -190,6 +195,22 @@
 
       ctx.closePath();
       ctx.stroke();
+    }
+
+    //handle blinking
+    if(ship.blinkNum > 0) {
+      //reduce blink time
+      ship.blinkTime--;
+
+      //reduce blink num
+      if(ship.blinkTime == 0) {
+        ship.blinkTime = Math.ceil(SHIP_BLINK_DUR * FPS);
+        ship.blinkNum--; 
+      }
+    }
+
+
+
     } else {
       //draw the explosion
       ctx.fillStyle = "darkred";

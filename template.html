@@ -11,7 +11,7 @@
   <canvas id="gameCanvas" width="700" height="500"></canvas>
   <script>
     const FPS = 30;
-    const ROIDS_NUM = 3; // starting number of asteroids
+    const ROIDS_NUM = 10; // starting number of asteroids
     const ROIDS_JAG = 0.4; // jaggedness of the asteroids (0 = none, 1= lots)
     const ROIDS_SPD = 100; //starting size of asteroids
     const ROIDS_SIZE = 50; // max starting speed of asteroids in PPS
@@ -206,7 +206,8 @@
 
 
         //move asteroids
-
+        roids[i].x += roids[i].xv;
+        roids[i].y += roids[i].yv;
 
 
 
